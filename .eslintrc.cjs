@@ -1,0 +1,31 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react-hooks/recommended',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'src/components/city/MapaV5Tecowebp.tsx',],
+  parser: '@typescript-eslint/parser',
+  plugins: ['react-refresh'],
+  rules: {
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+    'no-console': ['warn', { 'allow': ['error'] }],
+    'quotes': ['error', 'single'],
+    'jsx-quotes': ['error', 'prefer-single'],
+    'indent': ['error', 2],
+    'no-nested-ternary': 'warn',
+    'no-trailing-spaces': 'error',
+    'no-var': 'error',
+    'object-curly-spacing': ['error', 'always'],
+    'no-unused-vars': 'warn',
+    'prefer-const': 'error',
+    'require-await': 'error',
+    'prefer-template': 'error',
+    '@typescript-eslint/no-unused-vars': 'off',
+  },
+};
