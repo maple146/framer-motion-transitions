@@ -5,35 +5,20 @@ import { AnimatePresence, MotionConfig, Variants, motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 
-type Direction = 'vertical' | 'diagonal' ;
+type Direction = 'vertical' | 'diagonal' | 'null' ;
 
-const variantsDiagonal = {
+const variants = {
   initial: (direction: Direction) => ({
-    y: -1000,
-    x: -1000,
-  }),
-  target: {
-    y: 0,
-    x: 0
-  },
-  exit: (direction: Direction) => ({
-    y: 1000,
-    x: 1000,
-  }),
-};
-
-const variantsVertical = {
-  initial: (direction: Direction) => ({
-    y: -1000,
-    x: 0,
+    y: direction === 'vertical' ? -1000 : -1000,
+    x: direction === 'vertical' ? 0 : -1000,
   }),
   target: {
     y: 0,
     x: 0,
   },
   exit: (direction: Direction) => ({
-    y: 1000,
-    x: 0,
+    y: direction === 'vertical' ? 1000 : 1000,
+    x: direction === 'vertical' ? 0 : 1000,
   }),
 };
 
@@ -43,17 +28,17 @@ const Testing = () => {
   const [transitionHome, setTransitionHome] = useState<boolean | null>(null)
   const [transitionVertical, setTransitionVertical] = useState<boolean | null>(null)
   const [transitionDiagonal, setTransitionDiagonal] = useState<boolean | null>(null)
-
-  const direction: Direction = transitionHome ? 'vertical' : 'diagonal';
+  const [direction, setDirection] = useState<string | null>(null)
 
   console.log({ transitionHome })
   console.log({ transitionVertical })
   console.log({ transitionDiagonal })
 
   return (
-    <MotionConfig transition={{ duration: 3 }}>
+    <MotionConfig transition={{ duration: 1 }}>
       <div className='fixed bg-black text-white'>
         <pre>
+          <div>Direction value: {String(direction)}</div>
           <div>TransitionHome value: {String(transitionHome)}</div>
           <div>TransitionVertical value: {String(transitionVertical)}</div>
           <div>TransitionDiagonal value: {String(transitionDiagonal)}</div>
@@ -64,6 +49,7 @@ const Testing = () => {
       >
         <AnimatePresence
           mode='popLayout'
+          custom={direction}
           initial={false}
         >
           {
@@ -71,29 +57,27 @@ const Testing = () => {
               <motion.div
                 key={'main'}
                 custom={direction}
-                variants={variantsVertical}
+                variants={variants}
                 initial='initial'
                 animate='target'
                 exit='exit'
               >
                 <div className='w-screen h-screen flex flex-col justify-center items-center bg-orange-300'>
                   <div>Home</div>
-                  <div>Transition value: {String(transitionHome)}</div>
                   <div>Direction value: {String(direction)}</div>
+                  <div>TransitionHome value: {String(transitionHome)}</div>
+                  <div>TransitionVertical value: {String(transitionVertical)}</div>
+                  <div>TransitionDiagonal value: {String(transitionDiagonal)}</div>
                   <div>
                     <Button onClick={() => {
+                      setDirection('vertical'),
                       setTransitionHome(true),
-                      setTransitionVertical(true),
-                      setTimeout(() => {
-                        router.push('/page-c');
-                      }, 3000);
+                      setTransitionVertical(true);
                     }}>Go to A Component</Button>
                     <Button onClick={() => {
+                      setDirection('diagonal'),
                       setTransitionHome(true),
-                      setTransitionDiagonal(true),
-                      setTimeout(() => {
-                        router.push('/page-d');
-                      }, 3000);
+                      setTransitionDiagonal(true);
                     }}>Go to B Component</Button>
                   </div>
                 </div>
@@ -109,16 +93,18 @@ const Testing = () => {
             transitionVertical && (
               <motion.div
                 key={'comp1'}
-                variants={variantsVertical}
                 custom={direction}
+                variants={variants}
                 initial='initial'
                 animate='target'
                 exit='exit'
               >
                 <div className='w-screen h-screen flex flex-col justify-center items-center bg-green-300'>
-                  <div>Ticket para animacion</div>
-                  <div>Transition value: {String(transitionHome)}</div>
+                  <div>Ticket de animacion</div>
                   <div>Direction value: {String(direction)}</div>
+                  <div>TransitionHome value: {String(transitionHome)}</div>
+                  <div>TransitionVertical value: {String(transitionVertical)}</div>
+                  <div>TransitionDiagonal value: {String(transitionDiagonal)}</div>
                   <div>
                     <Button onClick={() => {
                       setTransitionHome(true),
@@ -137,14 +123,14 @@ const Testing = () => {
             transitionDiagonal && (
               <motion.div
                 key={'comp2'}
-                variants={variantsDiagonal}
                 custom={direction}
+                variants={variants}
                 initial='initial'
                 animate='target'
                 exit='exit'
               >
                 <div className='w-screen h-screen flex flex-col justify-center items-center bg-purple-300'>
-                  <div>FAQs para animacion</div>
+                  <div>FAQs de animacion</div>
                   <div>Transition value: {String(transitionHome)}</div>
                   <div>Direction value: {String(direction)}</div>
                   <div>
