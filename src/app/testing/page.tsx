@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { AnimatePresence, MotionConfig, Variants, motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
+import { useRouter } from 'next/navigation';
 
 type Direction = 'vertical' | 'diagonal' ;
 
@@ -37,16 +38,20 @@ const variantsVertical = {
 };
 
 
-
 const Testing = () => {
+  const router = useRouter();
   const [transitionHome, setTransitionHome] = useState<boolean | null>(null)
   const [transitionVertical, setTransitionVertical] = useState<boolean | null>(null)
   const [transitionDiagonal, setTransitionDiagonal] = useState<boolean | null>(null)
 
   const direction: Direction = transitionHome ? 'vertical' : 'diagonal';
 
+  console.log({ transitionHome })
+  console.log({ transitionVertical })
+  console.log({ transitionDiagonal })
+
   return (
-    <MotionConfig transition={{ duration: 1 }}>
+    <MotionConfig transition={{ duration: 3 }}>
       <div className='fixed bg-black text-white'>
         <pre>
           <div>TransitionHome value: {String(transitionHome)}</div>
@@ -78,11 +83,17 @@ const Testing = () => {
                   <div>
                     <Button onClick={() => {
                       setTransitionHome(true),
-                      setTransitionVertical(true)
+                      setTransitionVertical(true),
+                      setTimeout(() => {
+                        router.push('/page-c');
+                      }, 3000);
                     }}>Go to A Component</Button>
                     <Button onClick={() => {
                       setTransitionHome(true),
-                      setTransitionDiagonal(true)
+                      setTransitionDiagonal(true),
+                      setTimeout(() => {
+                        router.push('/page-d');
+                      }, 3000);
                     }}>Go to B Component</Button>
                   </div>
                 </div>
@@ -105,7 +116,7 @@ const Testing = () => {
                 exit='exit'
               >
                 <div className='w-screen h-screen flex flex-col justify-center items-center bg-green-300'>
-                  <div>Ticket</div>
+                  <div>Ticket para animacion</div>
                   <div>Transition value: {String(transitionHome)}</div>
                   <div>Direction value: {String(direction)}</div>
                   <div>
@@ -133,7 +144,7 @@ const Testing = () => {
                 exit='exit'
               >
                 <div className='w-screen h-screen flex flex-col justify-center items-center bg-purple-300'>
-                  <div>FAQs</div>
+                  <div>FAQs para animacion</div>
                   <div>Transition value: {String(transitionHome)}</div>
                   <div>Direction value: {String(direction)}</div>
                   <div>
