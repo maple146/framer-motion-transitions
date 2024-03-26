@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { AnimatePresence, MotionConfig, Variants, motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
+import PageC from '../page-c/page';
+import PageD from '../page-d/page';
 
 type Direction = 'vertical' | 'diagonal' | 'null' ;
 
@@ -30,6 +32,7 @@ const Testing = () => {
   const [transitionDiagonal, setTransitionDiagonal] = useState<boolean | null>(null)
   const [direction, setDirection] = useState<string | null>(null)
 
+  console.log({ direction })
   console.log({ transitionHome })
   console.log({ transitionVertical })
   console.log({ transitionDiagonal })
@@ -72,17 +75,22 @@ const Testing = () => {
                     <Button onClick={() => {
                       setDirection('vertical'),
                       setTransitionHome(true),
-                      setTransitionVertical(true);
-                    }}>Go to A Component</Button>
+                      setTransitionVertical(true),
+                      setTimeout(() => {
+                        router.push('/page-c');
+                      }, 1000);
+                    }}>Go to C Page</Button>
                     <Button onClick={() => {
                       setDirection('diagonal'),
                       setTransitionHome(true),
-                      setTransitionDiagonal(true);
-                    }}>Go to B Component</Button>
+                      setTransitionDiagonal(true),
+                      setTimeout(() => {
+                        router.push('/page-d');
+                      }, 1000);
+                    }}>Go to D Page</Button>
                   </div>
                 </div>
               </motion.div>
-
             )
           }
         </AnimatePresence>
@@ -91,28 +99,7 @@ const Testing = () => {
         >
           {
             transitionVertical && (
-              <motion.div
-                key={'comp1'}
-                custom={direction}
-                variants={variants}
-                initial='initial'
-                animate='target'
-                exit='exit'
-              >
-                <div className='w-screen h-screen flex flex-col justify-center items-center bg-green-300'>
-                  <div>Ticket de animacion</div>
-                  <div>Direction value: {String(direction)}</div>
-                  <div>TransitionHome value: {String(transitionHome)}</div>
-                  <div>TransitionVertical value: {String(transitionVertical)}</div>
-                  <div>TransitionDiagonal value: {String(transitionDiagonal)}</div>
-                  <div>
-                    <Button onClick={() => {
-                      setTransitionHome(true),
-                      setTransitionVertical(null)
-                    }}>Go to Main Component</Button>
-                  </div>
-                </div>
-              </motion.div>
+              <PageC direction={direction} variants={variants} />
             )
           }
         </AnimatePresence>
@@ -121,26 +108,7 @@ const Testing = () => {
         >
           {
             transitionDiagonal && (
-              <motion.div
-                key={'comp2'}
-                custom={direction}
-                variants={variants}
-                initial='initial'
-                animate='target'
-                exit='exit'
-              >
-                <div className='w-screen h-screen flex flex-col justify-center items-center bg-purple-300'>
-                  <div>FAQs de animacion</div>
-                  <div>Transition value: {String(transitionHome)}</div>
-                  <div>Direction value: {String(direction)}</div>
-                  <div>
-                    <Button onClick={() => {
-                      setTransitionHome(true),
-                      setTransitionDiagonal(null)
-                    }}>Go to Main Component</Button>
-                  </div>
-                </div>
-              </motion.div>
+              <PageD direction={direction} variants={variants} />
             )
           }
         </AnimatePresence>
